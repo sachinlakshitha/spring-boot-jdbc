@@ -1,6 +1,6 @@
 # Spring Boot JDBC + MySQL Example
 
-This is a simple Spring Boot application that uses Spring Data JPA to connect to MySQL database.
+This is a simple Spring Boot application that uses Spring JDBC to connect to MySQL database.
 
 ## Requirements
 
