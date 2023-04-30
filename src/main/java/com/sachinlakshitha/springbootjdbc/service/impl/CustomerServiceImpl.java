@@ -6,6 +6,8 @@ import com.sachinlakshitha.springbootjdbc.model.Customer;
 import com.sachinlakshitha.springbootjdbc.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> findAll() {
         return customerDao.findAll().stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<CustomerDto> findAllByPage(Pageable page) {
+        return customerDao.findAllByPage(page).stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<CustomerDto> findAllBySort(Sort sort) {
+        return customerDao.findAllBySort(sort).stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<CustomerDto> findAllBySortAndPage(Pageable page) {
+        return customerDao.findAllBySortAndPage(page).stream().map(this::convertToDto).toList();
     }
 
     @Override

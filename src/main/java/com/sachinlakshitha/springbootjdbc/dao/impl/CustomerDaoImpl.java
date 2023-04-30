@@ -3,6 +3,10 @@ package com.sachinlakshitha.springbootjdbc.dao.impl;
 import com.sachinlakshitha.springbootjdbc.dao.CustomerDao;
 import com.sachinlakshitha.springbootjdbc.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -40,6 +44,33 @@ public class CustomerDaoImpl implements CustomerDao {
     public List<Customer> findAll() {
         String sql = "SELECT * FROM CUSTOMER";
         return jdbcTemplate.query(sql, (rs, rowNum) -> getCustomer(rs));
+    }
+
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM CUSTOMER", Integer.class);
+    }
+
+    @Override
+    public Page<Customer> findAllByPage(Pageable page) {
+        String sql = "SELECT * FROM CUSTOMER LIMIT " + page.getOffset() + " , " + page.getPageSize();
+        List<Customer> customers = jdbcTemplate.query(sql, (rs, rowNum) -> getCustomer(rs));
+        return new PageImpl<Customer>(customers, page, count());
+    }
+
+    @Override
+    public List<Customer> findAllBySort(Sort sort) {
+        Sort.Order order = sort.toList().get(0);
+        String sql = "SELECT * FROM CUSTOMER ORDER BY " + order.getProperty() + " " + order.getDirection().name();
+        return jdbcTemplate.query(sql, (rs, rowNum) -> getCustomer(rs));
+    }
+
+    @Override
+    public Page<Customer> findAllBySortAndPage(Pageable page) {
+        Sort.Order order = !page.getSort().isEmpty() ? page.getSort().toList().get(0) : Sort.Order.by("ID");
+        List<Customer> customers = jdbcTemplate.query("SELECT * FROM CUSTOMER ORDER BY " + order.getProperty() + " "
+                        + order.getDirection().name() + " LIMIT " + page.getOffset() + " , " + page.getPageSize(),
+                (rs, rowNum) -> getCustomer(rs));
+        return new PageImpl<Customer>(customers, page, count());
     }
 
     @Override

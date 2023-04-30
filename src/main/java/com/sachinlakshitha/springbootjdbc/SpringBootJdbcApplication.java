@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.UUID;
@@ -40,6 +42,15 @@ public class SpringBootJdbcApplication implements CommandLineRunner {
 		log.info("[FIND_BY_ID] {}", customerService.findById(customerDto.getId()));
 
 		log.info("[FIND_ALL] {}", customerService.findAll());
+
+		// Pagination example with page size 10
+		log.info("[FIND_ALL_BY_PAGINATION] {}", customerService.findAllByPage(PageRequest.of(0,10)));
+
+		// Sort by name in ascending order
+		log.info("[FIND_ALL_BY_SORT] {}", customerService.findAllBySort(Sort.by(Sort.Direction.fromString("ASC"), "NAME")));
+
+		// Sort by name in descending order and pagination with page size 10
+		log.info("[FIND_ALL_BY_SORT_AND_PAGINATION] {}", customerService.findAllBySortAndPage(PageRequest.of(0,10, Sort.by(Sort.Direction.fromString("DESC"), "NAME"))));
 
 		log.info("[UPDATE]");
 		customerDto.setName("Sachin Lakshitha (Updated)");

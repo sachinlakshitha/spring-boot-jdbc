@@ -6,8 +6,7 @@ This is a simple Spring Boot application that uses Spring JDBC to connect to MyS
 
 1. Java 17
 2. Maven 3
-3. Spring Boot 3.0.1
-4. MySQL 8.x.x
+3. MySQL 8.x.x
 
 ## Steps to Setup
 
@@ -27,7 +26,7 @@ git clone https://github.com/sachinlakshitha/spring-boot-jdbc.git
 
 ```bash
 mvn package
-java -jar target/spring-boot-jdbc-mysql-1.0.0-SNAPSHOT.jar
+java -jar target/spring-boot-jdbc-1.0.0-SNAPSHOT.jar
 ```
 
 Alternatively, you can run the app without packaging it using -
